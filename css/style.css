@@ -223,3 +223,22 @@ body.photo-zoomed .images img.zoomed {
 #music-toggle:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
+
+/* --- Heart Fountain Effect --- */
+.heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 24px;
+    animation: heart-fountain 1.5s ease-out forwards;
+}
+
+@keyframes heart-fountain {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--end-x), var(--end-y)) scale(0);
+        opacity: 0;
+    }
+}
