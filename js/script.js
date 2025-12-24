@@ -48,23 +48,112 @@ document.addEventListener('DOMContentLoaded', () => {
 
     playMusic();
 
-    // Generate background stars
-    for (let i = 0; i < 300; i++) { // More stars for full screen
-        const star = document.createElement('div');
-        star.className = 'star-sm';
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
-        star.style.left = `${x}px`;
-        star.style.top = `${y}px`;
-        backgroundStarsContainer.appendChild(star);
+    const stars = []; // Array to hold all star objects
+
+    // 1. Generate the initial star positions from text
+    function createInitialStarfield() {
+        const text = "Zen & Zen's";
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const font_size = 120;
+        const canvas_width = 1000;
+        const canvas_height = 200;
+
+        canvas.width = canvas_width;
+        canvas.height = canvas_height;
+        ctx.font = `${font_size}px "Segoe Script", "Brush Script MT", cursive`;
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 6;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.strokeText(text, canvas_width / 2, canvas_height / 2);
+
+        const imageData = ctx.getImageData(0, 0, canvas_width, canvas_height);
+        const textPoints = [];
+        for (let y = 0; y < canvas_height; y += 2) { // Denser scan
+            for (let x = 0; x < canvas_width; x += 2) {
+                if (imageData.data[(y * canvas_width + x) * 4 + 3] > 128) {
+                    textPoints.push({ x: x, y: y });
+                }
+            }
+        }
+        
+        // Create star objects that will converge into the text shape
+        const densityFactor = 2500;
+        const totalStars = Math.floor((window.innerWidth * window.innerHeight) / densityFactor);
+
+        for (let i = 0; i < totalStars; i++) {
+            const p = textPoints[Math.floor(Math.random() * textPoints.length)];
+            if (!p) continue;
+
+            const starEl = document.createElement('div');
+            starEl.className = 'star-sm';
+
+            const destinationX = (p.x / canvas_width) * window.innerWidth * 0.9 + window.innerWidth * 0.05 + (Math.random() - 0.5) * 5;
+            const destinationY = (p.y / canvas_height) * window.innerHeight * 0.4 + window.innerHeight * 0.15 + (Math.random() - 0.5) * 5;
+            
+            const originalX = Math.random() * window.innerWidth;
+            const originalY = Math.random() * window.innerHeight;
+
+            starEl.style.left = `${originalX}px`;
+            starEl.style.top = `${originalY}px`;
+            backgroundStarsContainer.appendChild(starEl);
+
+            stars.push({
+                element: starEl,
+                originalX: originalX,
+                originalY: originalY,
+                currentX: originalX,
+                currentY: originalY,
+                destinationX: destinationX,
+                destinationY: destinationY,
+                progress: 0 // 0 = random, 1 = on text
+            });
+        }
     }
 
-    // Generate stars on the tree
+    // 2. Animate the stars dispersing over time
+    function animateStars() {
+        stars.forEach(star => {
+            // On a random chance, update a star's position
+            if (Math.random() < 0.01 && star.progress < 1) {
+                
+                star.progress = Math.min(star.progress + 0.05, 1); // Increment progress slowly
+
+                // Interpolate position based on progress
+                const newX = star.originalX + (star.destinationX - star.originalX) * star.progress;
+                const newY = star.originalY + (star.destinationY - star.originalY) * star.progress;
+
+                // Add some wobble to the path
+                const wobbleX = (Math.random() - 0.5) * 50 * star.progress;
+                const wobbleY = (Math.random() - 0.5) * 50 * star.progress;
+
+                star.currentX = newX + wobbleX;
+                star.currentY = newY + wobbleY;
+
+                // "Blink" effect by hiding, moving, and showing
+                star.element.style.opacity = 0;
+                setTimeout(() => {
+                    star.element.style.left = `${star.currentX}px`;
+                    star.element.style.top = `${star.currentY}px`;
+                    star.element.style.opacity = 1;
+                }, 400); // Wait for fade out before moving and fading in
+            }
+        });
+
+        requestAnimationFrame(animateStars); // Loop
+    }
+
+    // Start the process
+    createInitialStarfield();
+    animateStars();
+
+    // Generate stars on the tree (this remains static)
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.className = 'star-sm';
-        const x = Math.random() * 100; // Position as a percentage
-        const y = Math.random() * 100; // Position as a percentage
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
         star.style.left = `${x}%`;
         star.style.top = `${y}%`;
         treeStarsContainer.appendChild(star);
