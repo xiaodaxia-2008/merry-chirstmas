@@ -1,0 +1,224 @@
+body {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    font-family: sans-serif;
+}
+
+.title-message {
+    position: fixed;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-family: 'Segoe Script', 'Brush Script MT', cursive;
+    font-size: 3vh;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    z-index: 50;
+    text-align: center;
+    width: 100%;
+}
+
+#background-stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    z-index: -1;
+}
+
+.tree {
+    position: relative;
+    height: 70vh; /* Base height */
+    width: 47vh;  /* Maintain 2:3 aspect ratio */
+    margin-top: 12vh;
+}
+
+/* All child properties are calculated based on the original 900px height of the tree */
+/* Conversion factor: (original px value / 900) * 70vh */
+
+.t1, .t2, .t3, .t4, .t5 {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-bottom-style: solid;
+    border-bottom-width: 11.67vh; /* 150px */
+}
+
+.t1 {
+    border-left: 21.39vh solid transparent; /* 275px */
+    border-right: 21.39vh solid transparent;
+    border-bottom-color: #1a472a;
+    top: 54.44vh;  /* 700px */
+    left: 1.94vh;  /* 25px */
+}
+
+.t2 {
+    border-left: 17.5vh solid transparent; /* 225px */
+    border-right: 17.5vh solid transparent;
+    border-bottom-color: #2a6f44;
+    top: 45.11vh; /* 580px */
+    left: 5.83vh; /* 75px */
+}
+
+.t3 {
+    border-left: 13.61vh solid transparent; /* 175px */
+    border-right: 13.61vh solid transparent;
+    border-bottom-color: #3a915e;
+    top: 35.78vh; /* 460px */
+    left: 9.72vh; /* 125px */
+}
+
+.t4 {
+    border-left: 9.72vh solid transparent; /* 125px */
+    border-right: 9.72vh solid transparent;
+    border-bottom-color: #4CAF50;
+    top: 26.44vh; /* 340px */
+    left: 13.61vh; /* 175px */
+}
+
+.t5 {
+    border-left: 5.83vh solid transparent; /* 75px */
+    border-right: 5.83vh solid transparent;
+    border-bottom-color: #66BB6A;
+    top: 17.11vh; /* 220px */
+    left: 17.5vh;  /* 225px */
+}
+
+.trunk {
+    position: absolute;
+    width: 6.22vh;  /* 80px */
+    height: 11.67vh; /* 150px */
+    background: #4b3832;
+    top: 64.55vh;   /* 830px */
+    left: 20.22vh;  /* 260px */
+}
+
+.star {
+    position: absolute;
+    top: 11.67vh;    /* 150px */
+    left: 21.0vh;    /* 270px */
+    width: 0;
+    height: 0;
+    border-left: 2.33vh solid transparent;   /* 30px */
+    border-right: 2.33vh solid transparent;
+    border-bottom: 4.67vh solid yellow; /* 60px */
+    animation: blink 1s infinite;
+}
+
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.star-sm {
+    position: absolute;
+    width: 0.39vh; 
+    height: 0.39vh;
+    background-color: white;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+.images {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.images img {
+    position: absolute;
+    width: 4.67vh; /* 60px */
+    height: auto;
+    opacity: 0;
+    transform-origin: 50% 0;
+    animation: fade-in 2s forwards, pendulum-swing 4s 2s ease-in-out infinite;
+    cursor: zoom-in;
+    transition: all 0.5s ease-in-out;
+}
+
+#photo-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+}
+
+body.photo-zoomed #photo-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+body.photo-zoomed .images img.zoomed {
+    width: auto !important;
+    height: 80vh !important;
+    max-width: 80vw !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 101 !important;
+    animation: none !important;
+    cursor: zoom-out !important;
+    opacity: 1 !important;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pendulum-swing {
+    0% { transform: rotate(10deg); }
+    50% { transform: rotate(-10deg); }
+    100% { transform: rotate(10deg); }
+}
+
+/* --- Photo Positioning Classes (in vh) --- */
+.photo-t5-left { top: 28.78vh; left: 15.17vh; }  /* 370, 195 */
+.photo-t5-right { top: 28.78vh; left: 26.83vh; } /* 370, 345 */
+.photo-t4-left { top: 38.11vh; left: 11.28vh; }  /* 490, 145 */
+.photo-t4-right { top: 38.11vh; left: 30.72vh; } /* 490, 395 */
+.photo-t3-left { top: 47.44vh; left: 7.39vh; }   /* 610, 95 */
+.photo-t3-right { top: 47.44vh; left: 34.61vh; } /* 610, 445 */
+.photo-t2-left { top: 56.78vh; left: 3.5vh; }    /* 730, 45 */
+.photo-t2-right { top: 56.78vh; left: 38.5vh; }  /* 730, 495 */
+.photo-t1-left { top: 66.11vh; left: -0.39vh; }  /* 850, -5 */
+.photo-t1-right { top: 66.11vh; left: 42.4vh; }  /* 850, 545 */
+
+#music-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+#music-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
