@@ -7,16 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicToggle = document.getElementById('music-toggle');
     const photoOverlay = document.getElementById('photo-overlay');
     const imageUrls = [
-        "imgs/20251007_223026.png",
-        "imgs/20251008_143342.png",
-        "imgs/20251008_162500.png",
-        "imgs/20251122_135459.png",
-        "imgs/20251122_135603.png",
-        "imgs/20251122_135904.png",
-        "imgs/20251126_233734.png",
-        "imgs/20251126_233744.png",
-        "imgs/grok_image_xm2cf9x.png",
-        "imgs/JPEG_20251108_202933_5748594587902146437.png"
+        "imgs/1.webp",
+        "imgs/2.webp",
+        "imgs/3.webp",
+        "imgs/4.webp",
+        "imgs/5.webp",
+        "imgs/6.webp",
+        "imgs/7.webp",
+        "imgs/8.webp",
+        "imgs/9.webp",
+        "imgs/10.webp"
     ];
     const photoPositions = [
         'photo-t1-right', 'photo-t1-left', 'photo-t2-right', 'photo-t2-left',
